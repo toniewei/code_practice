@@ -1,1 +1,24 @@
-
+class Solution {
+    List<String> res;
+    
+    public List<String> generateAbbreviations(String word) {
+        res = new ArrayList<>();
+        char[] wordArray = word.toCharArray();
+        helper(wordArray,0,0,"");
+        return res;
+    }
+    private void helper(char[] word,int idx, int cnt, String path){
+        
+        if (idx == word.length){
+            if (cnt>0) {
+                res.add(path+cnt);
+                
+            }else{
+                res.add(path);
+            }
+            return;
+        }
+        helper(word,idx+1,cnt+1,path);
+        helper(word,idx+1,0,path+(cnt>0?cnt:"")+word[idx]);
+    }
+}
