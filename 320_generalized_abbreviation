@@ -10,12 +10,7 @@ class Solution {
     private void helper(char[] word,int idx, int cnt, String path){
         
         if (idx == word.length){
-            if (cnt>0) {
-                res.add(path+cnt);
-                
-            }else{
-                res.add(path);
-            }
+            res.add(cnt>0?path+cnt:path);
             return;
         }
         helper(word,idx+1,cnt+1,path);
