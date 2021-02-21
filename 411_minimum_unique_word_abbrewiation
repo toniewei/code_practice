@@ -1,0 +1,66 @@
+public class Solution {
+    String ret = "";
+    public String minAbbreviation(String target, String[] dictionary) {
+        ret = target;
+        allAbbrs("", 0, target, 0, dictionary);
+        return ret;
+    }
+    
+    public void allAbbrs(String cur, int count, String word, int index, String[] dictionary) {
+        // pruning
+        if (cur.length() >= ret.length()) {
+            return;
+        }
+        if (index == word.length()) {
+            if (count != 0) {
+                cur = cur + count;
+            }
+            if (checkDictionary(cur, dictionary)) {
+                if (cur.length() < ret.length()) {
+                    ret = cur;
+                }
+            }
+            return;
+        }
+       
+        allAbbrs(cur, count + 1, word, index + 1, dictionary);
+        if (count == 0) {
+            allAbbrs(cur + word.charAt(index), 0, word, index + 1, dictionary);
+        } else {
+            allAbbrs(cur + count + word.charAt(index), 0, word, index + 1, dictionary);
+        }
+    }
+    
+    public boolean checkDictionary(String abbr, String[] dictionary) {
+        int invalid = 0;
+        for (String word : dictionary) {
+            if (checkWord(word, abbr)) {
+                return false;
+            } else {
+                invalid++;
+            }
+        }
+        return invalid == dictionary.length;
+    }
+    
+    public boolean checkWord(String word, String abbr) {
+        int wi = 0, ai = 0;
+        while (wi < word.length() && ai < abbr.length()) {
+            if (word.charAt(wi) == abbr.charAt(ai)) {
+                wi++;
+                ai++;
+                continue;
+            }
+            if (abbr.charAt(ai) <= '0' || abbr.charAt(ai) > '9') {
+                return false;
+            }
+            int abbrCnt = 0;
+            while (ai < abbr.length() && (abbr.charAt(ai) >= '0' && abbr.charAt(ai) <= '9')) {
+                abbrCnt = abbrCnt * 10 + abbr.charAt(ai) - '0';
+                ai++;
+            }
+            wi += abbrCnt;
+        }
+        return wi == word.length() && ai == abbr.length();
+    }
+}
