@@ -1,0 +1,47 @@
+class WordDictionary {
+
+    class Trie{
+        Trie[] tries;
+        boolean isWord;
+        public Trie(){
+            this.tries = new Trie[26];
+            this.isWord = false;
+        }
+    }
+
+
+    /** Initialize your data structure here. */
+    Trie wordTrie;
+    public WordDictionary() {
+        this.wordTrie = new Trie();
+    }
+
+    public void addWord(String word) {
+        Trie trie = this.wordTrie;
+        for (char ch: word.toCharArray()){
+            if (trie.tries[ch - 'a'] == null) trie.tries[ch - 'a'] = new Trie();
+            trie = trie.tries[ch - 'a'];
+        }
+        trie.isWord = true;
+    }
+    public boolean search(String word){
+        return search(this.wordTrie,word);
+    }
+    
+
+    private boolean search(Trie input,String word) {
+        Trie trie = input;
+        for (int i=0;i<word.length();i++){
+            if (word.charAt(i) == '.'){
+                for (Trie t: trie.tries){
+                    if (t != null && search(t,word.substring(i+1))) return true;
+                }
+                return false;
+            }else {
+                if (trie.tries[word.charAt(i)-'a'] == null) return false;
+                trie = trie.tries[word.charAt(i)-'a'];
+            }
+        }
+        return trie.isWord;
+    }
+}
