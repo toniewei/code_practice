@@ -1,0 +1,55 @@
+class WordFilter {
+    private Node root;
+
+    public WordFilter(String[] words) {
+        root = new Node(-1);
+        for (int i = 0; i < words.length; i++)
+            insertWord(words[i], i);
+    }
+    
+    private void insertWord(String word, int index) {
+        for (int i = 0; i <= word.length(); i++) {
+            insert(word.substring(i) + "{" + word, index);
+        }
+    }
+    
+    private void insert(String key, int index) {
+        Node ptr = root;
+        for (char ch : key.toCharArray()) {
+            if (ptr.children[ch - 'a'] == null)
+                ptr.children[ch - 'a'] = new Node(index);
+            ptr = ptr.children[ch - 'a'];
+            ptr.index = index;
+        }
+    }
+    
+    private int search(String key) {
+        Node ptr = root;
+        for (char ch : key.toCharArray()) {
+            if (ptr.children[ch - 'a'] == null)
+                return -1;
+            ptr = ptr.children[ch - 'a'];
+        }
+        return ptr.index;
+    }
+    
+    public int f(String prefix, String suffix) {
+        return search(suffix + "{" + prefix);
+    }
+    
+    class Node {
+        Node[] children;
+        int index;
+        
+        public Node(int index) {
+            this.children = new Node[27];
+            this.index = index;
+        }
+    }
+}
+
+/**
+ * Your WordFilter object will be instantiated and called as such:
+ * WordFilter obj = new WordFilter(words);
+ * int param_1 = obj.f(prefix,suffix);
+ */
