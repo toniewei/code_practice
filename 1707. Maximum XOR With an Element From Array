@@ -1,0 +1,47 @@
+class Solution {
+    class Trie{
+        int num;
+        Trie[] children;
+        public Trie(){
+            this.children = new Trie[2];
+        }
+        void insert(int num){
+            Trie trie = this;
+            for (int i=31;i>=0;i--){
+                int tmp = 1 & (num >> i);
+                if (trie.children[tmp] == null) trie.children[tmp] = new Trie();
+                trie = trie.children[tmp];
+            }
+            trie.num = num;
+        }
+    }
+
+    Trie maxTrie;
+    public int[] maximizeXor(int[] nums, int[][] queries) {
+        this.maxTrie = new Trie();
+        Arrays.sort(nums);
+        ArrayList<int[]> q = new ArrayList<int[]>();
+        for (int i=0;i<queries.length;i++) q.add(new int[]{queries[i][0],queries[i][1],i});
+        Collections.sort(q,(a,b) -> a[1]-b[1]);
+        
+        int l=0;
+        int[] res = new int[q.size()];
+
+        for (int r=0;r<q.size();r++){
+            while(l < nums.length && nums[l]<=q.get(r)[1]) this.maxTrie.insert(nums[l++]);
+            res[q.get(r)[2]] = searchMax(this.maxTrie,q.get(r)[0]);
+        }
+        return res;
+    }
+
+    public int searchMax(Trie trie, int num){
+        Trie tmp = trie;
+        for (int i=31;i>=0;i--){
+            int bit = 1 & (num >> i);
+            if (tmp.children[1-bit]!=null) tmp = tmp.children[1-bit];
+            else if (tmp.children[bit]!=null) tmp = tmp.children[bit];
+            else return -1;
+        }
+        return tmp.num ^ num;
+    }
+}
