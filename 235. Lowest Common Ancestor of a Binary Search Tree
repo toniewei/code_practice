@@ -1,0 +1,23 @@
+class Solution {
+    
+    TreeNode res;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        res = null;
+        helper(root,p,q);
+        return res;
+        
+    }
+
+    private boolean helper(TreeNode root, TreeNode p, TreeNode q){
+        
+        if (root == null) return false;
+        
+        boolean itself = root == p || root == q;
+        boolean left = helper(root.left,p,q);
+        boolean right = helper(root.right,p,q);
+        
+        if (left && right || left && itself || right && itself) res = root;
+        
+        return left || right || itself;
+    }
+}
