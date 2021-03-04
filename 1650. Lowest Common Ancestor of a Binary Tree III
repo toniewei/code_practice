@@ -1,0 +1,19 @@
+class Solution {
+    Set<Node> pSet;
+    public Node lowestCommonAncestor(Node p, Node q) {
+        pSet = new HashSet<>();
+        getAllParents(p);
+        while(q!=null){
+            if (pSet.contains(q)) return q;
+            q = q.parent;
+        }
+        return null;
+    }
+    
+    private void getAllParents(Node p){
+        while (p!=null){
+            pSet.add(p);
+            p = p.parent;
+        }
+    }
+}
