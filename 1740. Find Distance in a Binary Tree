@@ -1,0 +1,26 @@
+class Solution {
+    Integer distance;
+    public int findDistance(TreeNode root, int p, int q) {
+        distance = 0;
+        helper(root,p,q);
+        return distance;
+    }
+    
+    private Integer helper(TreeNode root, int p, int q){
+        if (root == null) return null;
+        
+        Integer itself = (root.val == p || root.val == q)?0:null;
+        
+        Integer left = helper(root.left,p,q);
+        Integer right = helper(root.right,p,q);
+        
+        if (left!=null && right!=null) distance = left+right+2; 
+        if (itself!=null && left!=null) distance=left +1;
+        if (itself!=null && right!=null) distance=right+1;
+        
+        if (left!=null) return left+1;
+        if (right!=null) return right+1;
+        if (itself!=null) return 0;
+        return null;
+    }
+}
