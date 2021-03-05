@@ -1,0 +1,26 @@
+class Solution {
+    TreeNode ans;
+    int nsize;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode[] nodes) {
+        Set<TreeNode> set = new HashSet<>();
+        ans = null;
+        for (TreeNode node: nodes) set.add(node);
+        this.nsize = set.size();
+        helper(root,set);
+        return ans;
+    }
+    
+    private int helper(TreeNode root,Set<TreeNode> set){
+        if (root == null) return 0;
+        
+        int res = 0;
+        if (set.contains(root)) res++;
+        int left = helper(root.left,set);
+        int right = helper(root.right,set);
+        res+=left;res+=right;
+        
+        if (res == this.nsize) {ans = root; return 0;}
+        
+        return res;
+    }
+}
