@@ -1,0 +1,20 @@
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        Map<Integer, Integer> epochs = new HashMap<>();
+        
+        for (int[] interval: intervals) {
+            epochs.put(interval[0], epochs.getOrDefault(interval[0], 0)+1);
+            epochs.put(interval[1], epochs.getOrDefault(interval[1], 0)-1);
+        }
+        
+        int ans = 0;
+        int rooms = 0;
+        List<Integer> lst = new ArrayList<>(epochs.keySet());
+        Collections.sort(lst);
+        for (int time: lst) {
+            rooms += epochs.get(time);
+            ans = Math.max(ans, rooms);
+        }
+        return ans;
+    }
+}
