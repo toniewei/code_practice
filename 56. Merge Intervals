@@ -1,0 +1,19 @@
+class Solution {
+    
+    public int[][] merge(int[][] intervals) {
+        Stack<int[]> stack = new Stack<>();
+        Arrays.sort(intervals,(a,b) -> a[0]-b[0]);
+        //stack.add(intervals[0]);
+        for (int[] interval: intervals){
+            if (!stack.isEmpty() && stack.peek()[1]>=interval[0]){
+                int[] tmp = stack.pop();
+                stack.add(new int[]{tmp[0],Math.max(tmp[1],interval[1])});
+            }else{
+                stack.add(interval);
+            }
+        }
+        int[][] res = new int[stack.size()][2];
+        for (int i=0;i<stack.size();i++) res[i] = stack.get(i);
+        return res;
+    }
+}
