@@ -1,0 +1,21 @@
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        int l=0, r=Integer.MAX_VALUE;
+        for (int num: nums) l = Math.max(l,num);
+        while (l<r){
+            int mid = l + (r-l)/2;
+            if (isValid(nums,m,mid)) r = mid;
+            else l = mid+1;
+        }
+        return l;
+    }
+
+    private boolean isValid(int[] nums, int m, int maxValue){
+        int cnt=1,tmp=0;
+        for (int num: nums){
+            tmp+=num;
+            if (tmp>maxValue){cnt++;tmp=num;}
+        }
+        return cnt <= m;
+    }
+}
