@@ -1,0 +1,28 @@
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        if (bloomDay.length < m*k) return -1;
+        int max = 0;
+        for (int day: bloomDay) max = Math.max(max,day);
+        int l=0, r=max;
+        while(l<r){
+            int mid = l + (r-l)/2;
+            if (!can(bloomDay,m,k,mid)) l = mid+1;
+            else r = mid;
+        }
+        return l;
+    }
+    
+    private boolean can(int[] bloomDay, int m, int k, int mid){
+        int cnt=0, continues = 0;
+        for (int day:bloomDay){
+            if (mid>=day){
+                if (++continues==k){
+                    cnt++;continues=0;
+                }
+            }else{
+                continues = 0;
+            }
+        }
+        return cnt >=m;
+    }
+}
