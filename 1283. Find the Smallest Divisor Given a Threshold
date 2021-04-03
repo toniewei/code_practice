@@ -1,0 +1,17 @@
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int l=1, r=Integer.MAX_VALUE;
+        while (l<r){
+            int mid = l + (r-l)/2;
+            if (lessThanThreshold(nums,mid,threshold)) r=mid;
+            else l=mid+1;
+        }
+        return l;
+    }
+
+    private boolean lessThanThreshold(int[] nums, int divisor, int threshold){
+        int cnt=0;
+        for (int num: nums) cnt+=Math.ceil((double) num/divisor);
+        return cnt <= threshold;
+    }
+}
