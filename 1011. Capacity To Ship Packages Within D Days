@@ -1,0 +1,23 @@
+import java.util.Arrays;
+
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        int l = Arrays.stream(weights).max().orElse(1);
+        int r = Integer.MAX_VALUE;
+        while (l<r){
+            int mid = l + (r-l)/2;
+            if (canLoad(weights,mid,D)) r=mid;
+            else l = mid+1;
+        }
+        return l;
+    }
+
+    private boolean canLoad(int[] weights, int shipLoad, int D){
+        int cnt=1, tmp=0;
+        for (int weight: weights){
+            tmp+=weight;
+            if (tmp>shipLoad){tmp=weight;cnt++;}
+        }
+        return cnt<=D;
+    }
+}
