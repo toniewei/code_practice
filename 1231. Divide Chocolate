@@ -1,0 +1,23 @@
+import java.util.Arrays;
+
+class Solution {
+    public int maximizeSweetness(int[] sweetness, int K) {
+        int l= Arrays.stream(sweetness).min().orElse(0);
+        int r=Integer.MAX_VALUE;
+        while(l<r){
+            int mid = l + (r-l)/2;
+            if (isPossible(sweetness,K,mid)) r = mid;
+            else l = mid + 1;
+        }
+        return l;
+    }
+    
+    private boolean isPossible(int[] sweeetness, int K, int sweetMark){
+        int cnt=1, tmp=0;
+        for (int sweet: sweeetness){
+            tmp+=sweet;
+            if (tmp>sweetMark){cnt++;tmp=0;}
+        }
+        return cnt <= K+1;
+    }
+}
