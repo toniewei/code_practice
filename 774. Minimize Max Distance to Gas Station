@@ -1,0 +1,23 @@
+import java.util.Arrays;
+
+class Solution {
+    public double minmaxGasDist(int[] stations, int k) {
+        double l=0,r=Integer.MIN_VALUE;
+        for (int j=1;j<stations.length;j++) r=Math.max(r,stations[j]-stations[j-1]);
+        while (l+0.000001<r){
+            double mid = l + (r-l)/2;
+            if (helper(stations,k,mid)) r=mid;
+            else l = mid+0.000001;
+        }
+        return r;
+    }
+
+    private boolean helper(int[] stations, int k, double maxDistance){
+        int cnt=0;
+        for (int i=1;i<stations.length;i++){
+            //double tmp=stations[i-1];
+            cnt+=(Math.ceil((stations[i]-stations[i-1])/maxDistance)-1);
+        }
+        return cnt<=k;
+    }
+}
