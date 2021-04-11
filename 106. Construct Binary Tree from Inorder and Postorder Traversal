@@ -1,0 +1,28 @@
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        return helper(inorder,postorder);
+    }
+
+    private TreeNode helper(int[] inorder, int[] postorder){
+        if (inorder.length==0 || postorder.length==0) return null;
+
+        int ilen=inorder.length, plen=postorder.length;
+        TreeNode root = new TreeNode(postorder[plen-1]);
+
+        int idx=0;
+        for (int i=0;i<inorder.length;i++){
+            if (inorder[i]==root.val){idx=i;break;}
+        }
+        
+        int[] il = Arrays.copyOfRange(inorder,0,idx);
+        int[] ir = Arrays.copyOfRange(inorder,idx+1,ilen);
+        int[] pl = Arrays.copyOfRange(postorder,0,idx);
+        int[] pr = Arrays.copyOfRange(postorder,idx,plen-1);
+        
+        root.left = helper(il,pl);
+        root.right = helper(ir,pr);
+        return root;
+        
+
+    }
+}
