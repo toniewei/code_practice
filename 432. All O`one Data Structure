@@ -1,0 +1,69 @@
+class AllOne {
+
+    /** Initialize your data structure here. */
+    TreeMap<Integer, Set<String>> valueTreeMap;
+    Map<String, Integer> keyValueMap;
+    public AllOne() {
+        valueTreeMap = new TreeMap<>();
+        keyValueMap = new HashMap<>();
+    }
+    
+    /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+    public void inc(String key) {
+        int value = keyValueMap.getOrDefault(key, 0);
+        addKeyValue(key, value+1);
+        removeKeyValue(key, value);
+    }
+    
+    /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+    public void dec(String key) {
+        if (!keyValueMap.containsKey(key)) {
+            return;
+        }
+        if (keyValueMap.get(key) == 1) {
+            removeKeyValue(key, keyValueMap.get(key));
+            return;
+        }
+
+        int value = keyValueMap.get(key);
+        addKeyValue(key, value-1);
+        removeKeyValue(key, value);
+    }
+    
+    /** Returns one of the keys with maximal value. */
+    public String getMaxKey() {
+        if (valueTreeMap.isEmpty()) return "";
+        return valueTreeMap.lastEntry().getValue().iterator().next();
+    }
+    
+    /** Returns one of the keys with Minimal value. */
+    public String getMinKey() {
+        if (valueTreeMap.isEmpty()) return ""; 
+        return valueTreeMap.firstEntry().getValue().iterator().next();
+    }
+    
+    private void addKeyValue(String key, int value) {        
+        keyValueMap.put(key, value);        
+        valueTreeMap.putIfAbsent(value, new HashSet<>());
+        valueTreeMap.get(value).add(key);
+    }
+    
+    private void removeKeyValue(String key, int value) {
+        keyValueMap.remove(key, value);
+        if (valueTreeMap.containsKey(value)) {
+            valueTreeMap.get(value).remove(key);
+            if (valueTreeMap.get(value).isEmpty()) {
+                valueTreeMap.remove(value);
+            }
+        }
+    }
+}
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * AllOne obj = new AllOne();
+ * obj.inc(key);
+ * obj.dec(key);
+ * String param_3 = obj.getMaxKey();
+ * String param_4 = obj.getMinKey();
+ */
