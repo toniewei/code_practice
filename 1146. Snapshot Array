@@ -1,0 +1,31 @@
+import java.util.*;
+
+class SnapshotArray {
+
+    Map<Integer,Integer> tmp;
+    Map<Integer,Map<Integer,Integer>> snaps;
+    int snapId;
+
+
+    public SnapshotArray(int length) {
+        tmp = new HashMap<>();
+        snaps = new HashMap<>();
+        snapId = -1;
+    }
+
+    public void set(int index, int val) {
+        tmp.put(index,val);
+    }
+
+    public int snap() {
+
+        snaps.put(++snapId,new HashMap<Integer,Integer>(tmp));
+        return snapId;
+    }
+
+    public int get(int index, int snap_id) {
+        
+        if (!snaps.containsKey(snap_id) || !snaps.get(snap_id).containsKey(index)) return 0;
+        return snaps.get(snap_id).get(index);
+    }
+}
