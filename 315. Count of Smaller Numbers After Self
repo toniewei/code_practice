@@ -1,0 +1,41 @@
+class Node{
+    Node left;
+    Node right;
+    int leftCount;
+    int val;
+    
+    public Node(int val){
+        this.val = val;
+    }
+}
+
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        Node node = null;
+        List<Integer> res = new LinkedList<>();
+        
+        for(int i = nums.length-1; i >= 0; i--){
+            node = insertIntoBST(node, nums[i], 0, res);
+        }
+        
+        Collections.reverse(res);
+        return res;
+    }
+    
+    private Node insertIntoBST(Node root, int val, int sum, List<Integer> res){
+        if(root == null){
+            res.add(sum);
+            return new Node(val);
+        }
+        
+        if(root.val < val){
+            sum += root.leftCount + 1;
+            root.right = insertIntoBST(root.right, val, sum, res);
+        }else{
+            root.left = insertIntoBST(root.left, val, sum, res);
+            root.leftCount += 1;
+        }
+        
+        return root;
+    }
+}
