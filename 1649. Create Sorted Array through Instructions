@@ -1,0 +1,44 @@
+class Solution {
+    public int createSortedArray(int[] instructions) {
+        BinaryIndexedTree bit = new BinaryIndexedTree(new int[100_001]);
+        int cost = 0;
+        for(int num : instructions) {
+            cost = (cost + Math.min(bit.sum(num - 1), bit.sum(100_000) - bit.sum(num))) % 1_000_000_007;
+            bit.add(num, 1);
+        }
+        
+        return cost;
+    }
+}
+
+
+public class BinaryIndexedTree {
+    private int[] bit;
+    public BinaryIndexedTree(int[] array) {
+        this.bit = new int[array.length + 1];
+        for (int i = 0; i < array.length; i++)
+            this.add(i, array[i]);
+    }
+
+    public int sum(int index) {
+        int sum = 0, i = index + 1;
+        while (i > 0) {
+            sum += this.bit[i];
+            i -= lsb(i);
+        }
+        
+        return sum;
+    }
+
+    public void add(int index, int val) {
+        int i = index + 1;
+        while (i < this.bit.length) {
+            this.bit[i] += val;
+            i += lsb(i);
+        }
+    }
+
+    private int lsb(int x){
+        return x & -x;
+    }
+}
