@@ -1,0 +1,15 @@
+class Solution {
+    int cnt;
+    public int countNodes(TreeNode root) {
+        cnt = 0;
+        helper(root);
+        return cnt;
+    }
+
+    private void helper(TreeNode root){
+        if (root==null) return;
+        cnt++;
+        helper(root.left);
+        helper(root.right);
+    }
+}
