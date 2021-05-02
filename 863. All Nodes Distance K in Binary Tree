@@ -1,0 +1,75 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+    
+    private class Dnode{
+        int val;
+        Dnode left;
+        Dnode right;
+        Dnode pre;
+        Dnode(int x) { val = x; }
+        
+    }
+    
+    Dnode targetNode;
+    TreeNode target;
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        this.target = target;
+        Dnode head = construct(root);
+        List<Dnode> lst = new ArrayList<>();
+        lst.add(targetNode);
+        int depth = 0;
+        Set<Integer> visited = new HashSet<>();
+        
+        while(depth != K){
+            List<Dnode> tmp = new ArrayList<>();
+            for(Dnode node: lst){
+                visited.add(node.val);
+                if (node.pre!=null&&!visited.contains(node.pre.val)){
+                    tmp.add(node.pre);
+                    
+                }
+                if (node.left!=null&&!visited.contains(node.left.val)){
+                    tmp.add(node.left);
+                    
+                }
+                if (node.right!=null&&!visited.contains(node.right.val)){
+                    tmp.add(node.right);
+                   
+                }
+            }
+            depth++;
+            lst = tmp;
+        }
+        List<Integer> res = new ArrayList<>();
+        for (Dnode node: lst) res.add(node.val);
+        return res;
+        
+    }
+        
+    private Dnode construct(TreeNode root){
+        
+        if (root == null) return null;
+        Dnode newNode = new Dnode(root.val);
+        Dnode left = construct(root.left);
+        Dnode right = construct(root.right);
+        newNode.left = left;
+        newNode.right = right;
+        if (left != null) left.pre = newNode;
+        if (right != null) right.pre = newNode;
+        
+        if (root == this.target) targetNode = newNode;
+        
+        return newNode;
+        
+    }
+    
+}
