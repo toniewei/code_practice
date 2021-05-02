@@ -1,0 +1,55 @@
+class Solution {
+
+    class Item{
+        int cnt;
+        boolean isSearch;
+        Integer min;
+        Integer max;
+        
+        public Item(){
+            this.isSearch = false;
+            this.cnt = 0;
+        }
+    }
+    
+    int maxValue;
+    
+    public int largestBSTSubtree(TreeNode root) {
+        this.maxValue = 0;
+        helper(root);
+        return this.maxValue;
+    }
+    
+    private Item helper(TreeNode root){
+        
+        if (root == null){
+            Item result = new Item();
+            result.isSearch = true;
+            return result;
+        }
+        
+        Item leftResult = helper(root.left);
+        Item rightResult = helper(root.right);
+        
+        if (leftResult.isSearch == true && rightResult.isSearch == true){
+            
+            Item result = new Item();
+            result.min = root.val;
+            result.max = root.val;
+            
+            if (leftResult.max!=null && leftResult.max >= root.val) return result;
+            
+            if (rightResult.min!=null && rightResult.min <= root.val) return result;
+            
+            result.cnt++;result.isSearch=true;
+            if (leftResult.max!=null) {result.min = leftResult.min;result.cnt+=leftResult.cnt;}
+            if (rightResult.min!=null) {result.max = rightResult.max;result.cnt+=rightResult.cnt;}
+            
+            this.maxValue = Math.max(this.maxValue,result.cnt);
+            
+            return result;
+            
+        }else return new Item();
+        
+    }
+}
