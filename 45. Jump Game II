@@ -1,0 +1,15 @@
+class Solution {
+    public int jump(int[] nums) {
+        
+        int steps = 0;
+        int eidx = 0,sidx=-1;
+        while (eidx < nums.length-1){
+            steps++;
+            int tmp=0;
+            for (int i=sidx+1;i<=eidx;i++) tmp = Math.max(tmp,i+nums[i]);
+            sidx=eidx;
+            eidx=tmp;
+        }
+    return steps;
+    }
+}
