@@ -1,0 +1,18 @@
+class Solution {
+    public int maxResult(int[] nums, int k) {
+        Deque<Pair<Integer, Integer>> dq = new ArrayDeque<>();
+        int n = nums.length;
+        dq.offerLast(new Pair<>(nums[0], 0));
+        for (int i = 1; i < n; i++) { 
+            if (!dq.isEmpty() && i - k > dq.peekFirst().getValue()) {
+                dq.pollFirst();
+            }
+            int cur = dq.peekFirst().getKey();
+            while (!dq.isEmpty() && dq.peekLast().getKey() < cur + nums[i]) {
+                dq.pollLast();
+            }
+            dq.offerLast(new Pair<>(cur + nums[i], i));
+        }
+        return dq.pollLast().getKey();
+    }
+}
